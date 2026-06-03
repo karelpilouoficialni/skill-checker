@@ -498,6 +498,10 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     if (state.screen === 'game' && state.active) handleInput();
   }
+  if (e.code === 'Escape' && state.screen === 'game') {
+    cleanupGame();
+    showScreen('menu');
+  }
 });
 
 skillCircle.addEventListener('click', () => {
