@@ -250,7 +250,7 @@ function beginCheck() {
 
   // Auto-fail if no input in time
   const zoneDuration = (state.zoneSize / 360) / state.config.speed * 1000;
-  const autoFailTime = Math.min(800, 1000 / state.config.speed); // cap at 800ms so Easy isn't too slow
+  const autoFailTime = 1000 / state.config.speed; // time for one full rotation
   state.autoFailTimer = setTimeout(() => {
     if (state.active) handleInput(true); // force miss after one rotation
   }, autoFailTime + zoneDuration);
@@ -495,14 +495,26 @@ function updateHUD() {
   hudStreak.textContent = state.streak > 0 ? `${state.streak}🔥` : '—';
 }
 
+// ── SKIP COUNTDOWN ────────────────────────────
+function skipCountdown() {
+  if (!state.waiting) return;
+  clearTimeout(state.waitTimeout);
+  if (state.countdownTimer) clearInterval(state.countdownTimer);
+  state.countdownTimer = null;
+  countdownWrap.classList.add('hidden');
+  countdownTime.textContent = '';
+  beginCheck();
+}
+
 // ── INPUT EVENTS ─────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' || e.code === 'Enter') {
     e.preventDefault();
     if (state.screen === 'menu') {
       startGame();
-    } else if (state.screen === 'game' && state.active) {
-      handleInput();
+    } else if (state.screen === 'game') {
+      if (state.waiting) skipCountdown();
+      else if (state.active) handleInput();
     }
   }
   if (e.code === 'Escape' && state.screen === 'game') {
@@ -512,7 +524,10 @@ document.addEventListener('keydown', e => {
 });
 
 skillCircle.addEventListener('click', () => {
-  if (state.screen === 'game' && state.active) handleInput();
+  if (state.screen === 'game') {
+    if (state.waiting) skipCountdown();
+    else if (state.active) handleInput();
+  }
 });
 
 // ── RESULT SCREEN ────────────────────────────
