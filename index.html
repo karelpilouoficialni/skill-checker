@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,38 +27,38 @@
           </div>
         </div>
         <h1 class="logo-title">SKILL CHECK</h1>
-        <p class="logo-sub">Testuj své reflexy. Přežij.</p>
+        <p class="logo-sub">Test your reflexes. Survive.</p>
       </div>
 
       <div class="difficulty-section">
-        <h2 class="section-label">— Obtížnost —</h2>
+        <h2 class="section-label">— Difficulty —</h2>
         <div class="difficulty-cards">
           <button class="diff-card" data-diff="easy">
             <span class="diff-icon">🩸</span>
             <span class="diff-name">EASY</span>
-            <span class="diff-desc">Pomalá rotace<br/>Více času</span>
+            <span class="diff-desc">Slow rotation<br/>More time</span>
           </button>
           <button class="diff-card" data-diff="medium">
             <span class="diff-icon">💀</span>
             <span class="diff-name">MEDIUM</span>
-            <span class="diff-desc">Střední tempo<br/>Normální čas</span>
+            <span class="diff-desc">Medium pace<br/>Normal time</span>
           </button>
           <button class="diff-card selected" data-diff="hard">
             <span class="diff-icon">🔪</span>
             <span class="diff-name">HARD</span>
-            <span class="diff-desc">Rychlá rotace<br/>Málo času</span>
+            <span class="diff-desc">Fast rotation<br/>Little time</span>
           </button>
           <button class="diff-card diff-custom" data-diff="custom">
             <span class="diff-icon">⚙️</span>
             <span class="diff-name">CUSTOM</span>
-            <span class="diff-desc">Vlastní nastavení</span>
+            <span class="diff-desc">Custom settings</span>
           </button>
         </div>
 
         <!-- CUSTOM PANEL -->
         <div id="custom-panel" class="custom-panel hidden">
           <div class="custom-row">
-            <label>Rychlost rotace<span id="speed-val">5</span></label>
+            <label>Rotation speed<span id="speed-val">5</span></label>
             <input type="range" id="custom-speed" min="1" max="10" value="5" />
           </div>
           <div class="custom-row">
@@ -66,18 +66,18 @@
             <input type="range" id="custom-interval" min="1" max="8" step="0.5" value="3" />
           </div>
           <div class="custom-row">
-            <label>Počet kol<span id="rounds-val">5</span></label>
+            <label>Rounds<span id="rounds-val">5</span></label>
             <input type="range" id="custom-rounds" min="3" max="15" value="5" />
           </div>
         </div>
       </div>
 
       <button id="btn-start" class="btn-main">
-        <span class="btn-flicker">ZAČÍT HRU</span>
+        <span class="btn-flicker">START GAME</span>
       </button>
 
       <div class="menu-footer">
-        Zmáčkni <kbd>MEZERNÍK</kbd> nebo klikni na kruhu v pravý okamžik
+        Press <kbd>SPACE</kbd> or click the circle at the right moment
       </div>
     </div>
   </div>
@@ -86,15 +86,15 @@
   <div id="screen-game" class="screen">
     <div class="game-hud">
       <div class="hud-item">
-        <span class="hud-label">KOLO</span>
+        <span class="hud-label">ROUND</span>
         <span id="hud-round" class="hud-value">1 / 5</span>
       </div>
       <div class="hud-item">
-        <span class="hud-label">SKÓRE</span>
+        <span class="hud-label">SCORE</span>
         <span id="hud-score" class="hud-value">0</span>
       </div>
       <div class="hud-item">
-        <span class="hud-label">SÉRIE</span>
+        <span class="hud-label">STREAK</span>
         <span id="hud-streak" class="hud-value">0🔥</span>
       </div>
     </div>
@@ -123,7 +123,7 @@
 
       <!-- COUNTDOWN TO NEXT -->
       <div id="countdown-bar-wrap" class="countdown-bar-wrap hidden">
-        <div class="countdown-label">Další check za... <span id="countdown-time"></span></div>
+        <div class="countdown-label">Next check in... <span id="countdown-time"></span></div>
         <div class="countdown-bar-outer">
           <div id="countdown-bar" class="countdown-bar"></div>
         </div>
@@ -131,7 +131,7 @@
     </div>
 
     <div class="game-instruction">
-      <kbd>MEZERNÍK</kbd> nebo <kbd>KLIK</kbd> — trefit zelenou zónu
+      <kbd>SPACE</kbd> or <kbd>CLICK</kbd> — hit the green zone
     </div>
   </div>
 
@@ -142,34 +142,34 @@
 
       <div class="result-stats-grid">
         <div class="stat-box">
-          <span class="stat-label">Celkové skóre</span>
+          <span class="stat-label">Total score</span>
           <span id="stat-score" class="stat-value accent">0</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">Úspěšnost</span>
+          <span class="stat-label">Accuracy</span>
           <span id="stat-accuracy" class="stat-value">0%</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">Nejlepší série</span>
+          <span class="stat-label">Best streak</span>
           <span id="stat-best-streak" class="stat-value">0🔥</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">Průměrná přesnost</span>
+          <span class="stat-label">Avg. precision</span>
           <span id="stat-avg-precision" class="stat-value">—</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">Perfektní trefy</span>
+          <span class="stat-label">Perfect hits</span>
           <span id="stat-perfect" class="stat-value">0</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">Obtížnost</span>
+          <span class="stat-label">Difficulty</span>
           <span id="stat-difficulty" class="stat-value">—</span>
         </div>
       </div>
 
       <!-- PER-ROUND BREAKDOWN -->
       <div class="rounds-breakdown">
-        <h3 class="breakdown-title">Detaily kol</h3>
+        <h3 class="breakdown-title">Round details</h3>
         <div id="rounds-list" class="rounds-list"></div>
       </div>
 
@@ -177,8 +177,8 @@
       <div id="rank-display" class="rank-display"></div>
 
       <div class="result-buttons">
-        <button id="btn-retry" class="btn-main btn-secondary">Hrát znovu</button>
-        <button id="btn-menu" class="btn-main">Hlavní menu</button>
+        <button id="btn-retry" class="btn-main btn-secondary">Play again</button>
+        <button id="btn-menu" class="btn-main">Main menu</button>
       </div>
     </div>
   </div>

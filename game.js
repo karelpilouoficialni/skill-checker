@@ -362,7 +362,7 @@ function handleInput(autoFail = false) {
       const bonus = (state.streak - 1) * SCORE.streakBonus;
       scoreGained += bonus;
       if (state.streak >= 3) {
-        setTimeout(() => spawnFloatText(`🔥 ×${state.streak} SÉRIE!`, 'streak', skillCircle), 200);
+        setTimeout(() => spawnFloatText(`🔥 ×${state.streak} STREAK!`, 'streak', skillCircle), 200);
       }
     }
   }
@@ -523,10 +523,10 @@ function showResult() {
 
   // Header
   if (accuracy >= 60) {
-    resultHeader.textContent = hits.length === totalRounds ? 'GENERATOR OPRAVEN!' : 'PŘEŽIL JSI';
+    resultHeader.textContent = hits.length === totalRounds ? 'GENERATOR REPAIRED!' : 'YOU SURVIVED';
     resultHeader.className = 'result-header success';
   } else {
-    resultHeader.textContent = 'ZABIT VRAHEM';
+    resultHeader.textContent = 'KILLED BY THE KILLER';
     resultHeader.className = 'result-header failure';
   }
 
@@ -549,10 +549,10 @@ function showResult() {
     const labels = { miss: 'MISS', good: 'GOOD', great: 'GREAT', perfect: 'PERFECT' };
 
     row.innerHTML = `
-      <span class="round-num">Kolo ${i + 1}</span>
+      <span class="round-num">Round ${i + 1}</span>
       <span class="round-result">${icons[rd.result]} ${labels[rd.result]}</span>
       <span class="round-score">${rd.scoreGained > 0 ? '+' + rd.scoreGained : '—'}</span>
-      <span class="round-precision">${rd.precision != null ? Math.round(rd.precision * 100) + '% přesn.' : ''}</span>
+      <span class="round-precision">${rd.precision != null ? Math.round(rd.precision * 100) + '% prec.' : ''}</span>
     `;
     roundsList.appendChild(row);
   });
