@@ -248,9 +248,9 @@ function beginCheck() {
   state.lastTime = null;
   state.animId  = requestAnimationFrame(spinNeedle);
 
-  // Auto-fail if no input in time (2x the zone pass time)
+  // Auto-fail if no input in time
   const zoneDuration = (state.zoneSize / 360) / state.config.speed * 1000;
-  const autoFailTime = 360 / state.config.speed * 1000; // full rotation
+  const autoFailTime = Math.min(800, 1000 / state.config.speed); // cap at 800ms so Easy isn't too slow
   state.autoFailTimer = setTimeout(() => {
     if (state.active) handleInput(true); // force miss after one rotation
   }, autoFailTime + zoneDuration);
@@ -492,14 +492,18 @@ function playBeep(freq, gain, type) {
 function updateHUD() {
   hudRound.textContent  = `${state.round} / ${state.totalRounds}`;
   hudScore.textContent  = state.score.toLocaleString();
-  hudStreak.textContent = state.streak > 0 ? `${state.streak}🔥` : '0';
+  hudStreak.textContent = state.streak > 0 ? `${state.streak}🔥` : '—';
 }
 
 // ── INPUT EVENTS ─────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' || e.code === 'Enter') {
     e.preventDefault();
-    if (state.screen === 'game' && state.active) handleInput();
+    if (state.screen === 'menu') {
+      startGame();
+    } else if (state.screen === 'game' && state.active) {
+      handleInput();
+    }
   }
   if (e.code === 'Escape' && state.screen === 'game') {
     cleanupGame();
