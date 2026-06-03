@@ -88,9 +88,11 @@ const roundsList     = document.getElementById('rounds-list');
 const sliderSpeed    = document.getElementById('custom-speed');
 const sliderInterval = document.getElementById('custom-interval');
 const sliderRounds   = document.getElementById('custom-rounds');
+const sliderZoneSize = document.getElementById('custom-zonesize');
 const valSpeed       = document.getElementById('speed-val');
 const valInterval    = document.getElementById('interval-val');
 const valRounds      = document.getElementById('rounds-val');
+const valZoneSize    = document.getElementById('zonesize-val');
 
 // ── PARTICLES ────────────────────────────────
 function spawnParticles() {
@@ -137,6 +139,7 @@ diffCards.forEach(card => {
 sliderSpeed.addEventListener('input', () => { valSpeed.textContent = sliderSpeed.value; });
 sliderInterval.addEventListener('input', () => { valInterval.textContent = parseFloat(sliderInterval.value).toFixed(1); });
 sliderRounds.addEventListener('input', () => { valRounds.textContent = sliderRounds.value; });
+sliderZoneSize.addEventListener('input', () => { valZoneSize.textContent = sliderZoneSize.value; });
 
 btnStart.addEventListener('click', startGame);
 btnRetry.addEventListener('click', () => {
@@ -153,7 +156,7 @@ function startGame() {
       speed:    parseFloat(sliderSpeed.value) * 0.4,
       interval: parseFloat(sliderInterval.value) * 1000,
       rounds:   parseInt(sliderRounds.value),
-      zoneSize: 22,
+      zoneSize: parseInt(sliderZoneSize.value),
       label:    'Custom',
     };
   }
