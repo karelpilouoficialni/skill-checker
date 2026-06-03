@@ -7,9 +7,9 @@
 
 // ── CONFIG ──────────────────────────────────
 const DIFFICULTY = {
-  easy:   { speed: 1.2, interval: 5000, rounds: 5, zoneSize: 28, label: 'Easy' },
-  medium: { speed: 2.0, interval: 3500, rounds: 7, zoneSize: 22, label: 'Medium' },
-  hard:   { speed: 3.2, interval: 2200, rounds: 10, zoneSize: 16, label: 'Hard' },
+  easy:   { speed: 0.8, interval: 5000, rounds: 5, zoneSize: 28, label: 'Easy' },
+  medium: { speed: 1.4, interval: 3500, rounds: 7, zoneSize: 22, label: 'Medium' },
+  hard:   { speed: 2.2, interval: 2200, rounds: 10, zoneSize: 16, label: 'Hard' },
   custom: null, // filled at runtime
 };
 
