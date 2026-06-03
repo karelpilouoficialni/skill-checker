@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKILL CHECK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- PARTICLES / DUST -->
+  <div id="particles"></div>
+
+  <!-- MAIN MENU -->
+  <div id="screen-menu" class="screen active">
+    <div class="menu-bg-glow"></div>
+    <div class="menu-content">
+      <div class="logo-area">
+        <div class="logo-eyeball">
+          <div class="eyeball-outer">
+            <div class="eyeball-inner">
+              <div class="eyeball-pupil"></div>
+              <div class="eyeball-shine"></div>
+            </div>
+          </div>
+        </div>
+        <h1 class="logo-title">SKILL CHECK</h1>
+        <p class="logo-sub">Testuj své reflexy. Přežij.</p>
+      </div>
+
+      <div class="difficulty-section">
+        <h2 class="section-label">— Obtížnost —</h2>
+        <div class="difficulty-cards">
+          <button class="diff-card" data-diff="easy">
+            <span class="diff-icon">🩸</span>
+            <span class="diff-name">EASY</span>
+            <span class="diff-desc">Pomalá rotace<br/>Více času</span>
+          </button>
+          <button class="diff-card" data-diff="medium">
+            <span class="diff-icon">💀</span>
+            <span class="diff-name">MEDIUM</span>
+            <span class="diff-desc">Střední tempo<br/>Normální čas</span>
+          </button>
+          <button class="diff-card selected" data-diff="hard">
+            <span class="diff-icon">🔪</span>
+            <span class="diff-name">HARD</span>
+            <span class="diff-desc">Rychlá rotace<br/>Málo času</span>
+          </button>
+          <button class="diff-card diff-custom" data-diff="custom">
+            <span class="diff-icon">⚙️</span>
+            <span class="diff-name">CUSTOM</span>
+            <span class="diff-desc">Vlastní nastavení</span>
+          </button>
+        </div>
+
+        <!-- CUSTOM PANEL -->
+        <div id="custom-panel" class="custom-panel hidden">
+          <div class="custom-row">
+            <label>Rychlost rotace<span id="speed-val">5</span></label>
+            <input type="range" id="custom-speed" min="1" max="10" value="5" />
+          </div>
+          <div class="custom-row">
+            <label>Interval (s)<span id="interval-val">3.0</span></label>
+            <input type="range" id="custom-interval" min="1" max="8" step="0.5" value="3" />
+          </div>
+          <div class="custom-row">
+            <label>Počet kol<span id="rounds-val">5</span></label>
+            <input type="range" id="custom-rounds" min="3" max="15" value="5" />
+          </div>
+        </div>
+      </div>
+
+      <button id="btn-start" class="btn-main">
+        <span class="btn-flicker">ZAČÍT HRU</span>
+      </button>
+
+      <div class="menu-footer">
+        Zmáčkni <kbd>MEZERNÍK</kbd> nebo klikni na kruhu v pravý okamžik
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="screen-game" class="screen">
+    <div class="game-hud">
+      <div class="hud-item">
+        <span class="hud-label">KOLO</span>
+        <span id="hud-round" class="hud-value">1 / 5</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">SKÓRE</span>
+        <span id="hud-score" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">SÉRIE</span>
+        <span id="hud-streak" class="hud-value">0🔥</span>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <!-- SKILL CHECK CIRCLE -->
+      <div id="skill-circle" class="skill-circle">
+        <!-- Outer ring -->
+        <svg id="circle-svg" viewBox="0 0 300 300" class="circle-svg">
+          <!-- Background ring -->
+          <circle cx="150" cy="150" r="120" class="ring-bg" />
+          <!-- Success zone arc -->
+          <path id="success-zone" class="success-zone" />
+          <!-- Needle track (thin ring) -->
+          <circle cx="150" cy="150" r="120" class="ring-track" />
+          <!-- Needle -->
+          <line id="needle" x1="150" y1="150" x2="150" y2="30" class="needle-line" />
+          <circle cx="150" cy="30" r="6" class="needle-tip" id="needle-tip" />
+        </svg>
+
+        <div class="circle-center">
+          <div id="center-icon" class="center-icon">⚙️</div>
+          <div id="center-status" class="center-status"></div>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN TO NEXT -->
+      <div id="countdown-bar-wrap" class="countdown-bar-wrap hidden">
+        <div class="countdown-label">Další check za...</div>
+        <div class="countdown-bar-outer">
+          <div id="countdown-bar" class="countdown-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-instruction">
+      <kbd>MEZERNÍK</kbd> nebo <kbd>KLIK</kbd> — trefit zelenou zónu
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="screen-result" class="screen">
+    <div class="result-content">
+      <div id="result-header" class="result-header"></div>
+
+      <div class="result-stats-grid">
+        <div class="stat-box">
+          <span class="stat-label">Celkové skóre</span>
+          <span id="stat-score" class="stat-value accent">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Úspěšnost</span>
+          <span id="stat-accuracy" class="stat-value">0%</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Nejlepší série</span>
+          <span id="stat-best-streak" class="stat-value">0🔥</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Průměrná přesnost</span>
+          <span id="stat-avg-precision" class="stat-value">—</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Perfektní trefy</span>
+          <span id="stat-perfect" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Obtížnost</span>
+          <span id="stat-difficulty" class="stat-value">—</span>
+        </div>
+      </div>
+
+      <!-- PER-ROUND BREAKDOWN -->
+      <div class="rounds-breakdown">
+        <h3 class="breakdown-title">Detaily kol</h3>
+        <div id="rounds-list" class="rounds-list"></div>
+      </div>
+
+      <!-- RANK -->
+      <div id="rank-display" class="rank-display"></div>
+
+      <div class="result-buttons">
+        <button id="btn-retry" class="btn-main btn-secondary">Hrát znovu</button>
+        <button id="btn-menu" class="btn-main">Hlavní menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
