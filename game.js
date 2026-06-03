@@ -71,6 +71,7 @@ const hudStreak    = document.getElementById('hud-streak');
 
 const countdownWrap= document.getElementById('countdown-bar-wrap');
 const countdownBar = document.getElementById('countdown-bar');
+const countdownTime = document.getElementById('countdown-time');
 
 // Result
 const resultHeader   = document.getElementById('result-header');
@@ -174,6 +175,17 @@ function startGame() {
   scheduleNextCheck(600);
 }
 
+// ── COUNTDOWN TIME DISPLAY ────────────────────
+function updateCountdownTime(total, start) {
+  const elapsed = Date.now() - start;
+  const remaining = Math.max(0, total - elapsed);
+  countdownTime.textContent = (remaining / 1000).toFixed(1) + 's';
+  if (remaining <= 0 && state.countdownTimer) {
+    clearInterval(state.countdownTimer);
+    state.countdownTimer = null;
+  }
+}
+
 // ── SCHEDULE NEXT CHECK ──────────────────────
 function scheduleNextCheck(delay = null) {
   const interval = delay !== null ? delay : state.config.interval;
@@ -182,6 +194,8 @@ function scheduleNextCheck(delay = null) {
   stopNeedle();
 
   if (state.round >= state.totalRounds) {
+    if (state.countdownTimer) clearInterval(state.countdownTimer);
+    state.countdownTimer = null;
     setTimeout(showResult, 600);
     return;
   }
@@ -191,12 +205,20 @@ function scheduleNextCheck(delay = null) {
   countdownBar.style.transition = 'none';
   countdownBar.style.width = '100%';
 
-  requestAnimationFrame(() => {
-    countdownBar.style.transition = `width ${interval}ms linear`;
-    countdownBar.style.width = '0%';
-  });
+  // Force reflow so the browser registers the 100% state before we animate
+  void countdownBar.offsetWidth;
+  countdownBar.style.transition = `width ${interval}ms linear`;
+  countdownBar.style.width = '0%';
+
+  // Numeric countdown
+  const countdownStart = Date.now();
+  updateCountdownTime(interval, countdownStart);
+  if (state.countdownTimer) clearInterval(state.countdownTimer);
+  state.countdownTimer = setInterval(() => updateCountdownTime(interval, countdownStart), 100);
 
   state.waitTimeout = setTimeout(() => {
+    if (state.countdownTimer) clearInterval(state.countdownTimer);
+    state.countdownTimer = null;
     countdownWrap.classList.add('hidden');
     beginCheck();
   }, interval);
@@ -558,6 +580,7 @@ function cleanupGame() {
   state.active  = false;
   state.waiting = false;
   countdownWrap.classList.add('hidden');
+  countdownTime.textContent = '';
 }
 
 // When going back to menu cleanup game
