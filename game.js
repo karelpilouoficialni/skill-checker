@@ -24,7 +24,7 @@ const SCORE = {
 // ── STATE ────────────────────────────────────
 let state = {
   screen: 'menu',       // 'menu' | 'game' | 'result'
-  difficulty: 'hard',
+  difficulty: 'easy',
   config: null,
   angle: 0,             // degrees, needle angle (0 = top)
   animId: null,
