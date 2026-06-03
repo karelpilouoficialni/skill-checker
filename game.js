@@ -248,12 +248,13 @@ function beginCheck() {
   state.lastTime = null;
   state.animId  = requestAnimationFrame(spinNeedle);
 
-  // Auto-fail if no input in time
+  // Auto-fail: one full rotation + zone pass + 200ms reaction buffer
+  const rotationTime = 1000 / state.config.speed;
   const zoneDuration = (state.zoneSize / 360) / state.config.speed * 1000;
-  const autoFailTime = 1000 / state.config.speed; // time for one full rotation
+  const autoFailTime = rotationTime + zoneDuration + 200;
   state.autoFailTimer = setTimeout(() => {
-    if (state.active) handleInput(true); // force miss after one rotation
-  }, autoFailTime + zoneDuration);
+    if (state.active) handleInput(true);
+  }, autoFailTime);
 }
 
 // ── NEEDLE ANIMATION ─────────────────────────
